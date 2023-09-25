@@ -3,6 +3,8 @@ import 'package:gimbabpos/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:gimbabpos/main_page.dart';
+import 'package:gimbabpos/provier.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +20,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<bool> buttonStates = List.generate(12, (index) => false);
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MainPage(buttonStates: buttonStates),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (c) => ProcductStore()),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: MainPage(),
+      ),
     );
   }
 }

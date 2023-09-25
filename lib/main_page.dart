@@ -1,26 +1,32 @@
 // ignore_for_file: avoid_web_libraries_in_flutter, avoid_print
 import 'package:flutter/material.dart';
-import 'package:gimbabpos/order_page.dart';
+import 'package:gimbabpos/order_page/order_page.dart';
+import 'package:provider/provider.dart';
+
+import 'provier.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({
     super.key,
-    this.buttonStates,
   });
-  final buttonStates;
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
+  List<bool> buttonStates = List.generate(12, (index) => false);
+
+  isUsedCheck(int index) {
+    setState(() {
+      buttonStates[index] = !buttonStates[index];
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-  }
-
-  void isUsedCheck(int index) {
-    widget.buttonStates[index] = !widget.buttonStates[index];
+    context.read<ProcductStore>().getProductList();
   }
 
   @override
@@ -45,16 +51,16 @@ class _MainPageState extends State<MainPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => OrderPage(
-                    buttonStates: widget.buttonStates,
-                    index: index,
+                    // 인덱스 포함해서 넘기기
+                    isUsedCheck: () => isUsedCheck(index),
+                    tableNumber: index + 1,
                   ),
                 ),
               );
             },
 
             style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  widget.buttonStates[index] ? Colors.red : Colors.blue,
+              backgroundColor: buttonStates[index] ? Colors.red : Colors.blue,
             ),
 
             // child: Text('Button ${index + 1}'),
@@ -66,7 +72,7 @@ class _MainPageState extends State<MainPage> {
                     style: const TextStyle(fontSize: 20),
                   ),
                   Text(
-                    widget.buttonStates[index] ? "사용중" : "사용가능",
+                    buttonStates[index] ? "사용중" : "사용가능",
                     style: const TextStyle(fontSize: 20),
                   ),
                 ]),
