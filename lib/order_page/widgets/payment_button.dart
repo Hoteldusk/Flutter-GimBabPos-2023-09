@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:gimbabpos/order_page/widgets/order_list.dart';
 import 'package:gimbabpos/order_page/widgets/order_title.dart';
 import 'package:gimbabpos/order_page/widgets/total_price.dart';
+import 'package:gimbabpos/provier.dart';
+import 'package:provider/provider.dart';
 
 class PaymentButton extends StatelessWidget {
   const PaymentButton({
@@ -30,7 +32,7 @@ class PaymentButton extends StatelessWidget {
           if (orderList.isEmpty) {
             showDialog(
               context: context,
-              builder: (jokbo) {
+              builder: (c) {
                 return const Dialog(
                   child: SizedBox(
                     height: 400,
@@ -50,7 +52,7 @@ class PaymentButton extends StatelessWidget {
           } else {
             showDialog(
               context: context,
-              builder: (jokbo) {
+              builder: (c) {
                 return Dialog(
                   child: SizedBox(
                     height: 400,
@@ -71,6 +73,11 @@ class PaymentButton extends StatelessWidget {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    context.read<OrderStore>().insertOrderList(
+                                        orderList,
+                                        tableNumber,
+                                        20230926,
+                                        getTotalPrice());
                                     isUsedCheck();
                                     Navigator.pop(context);
                                     Navigator.pop(context);
@@ -84,6 +91,11 @@ class PaymentButton extends StatelessWidget {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    context.read<OrderStore>().insertOrderList(
+                                        orderList,
+                                        tableNumber,
+                                        20230926,
+                                        getTotalPrice());
                                     isUsedCheck();
                                     Navigator.pop(context);
                                     Navigator.pop(context);

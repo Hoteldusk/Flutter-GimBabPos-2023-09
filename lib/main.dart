@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (c) => ProcductStore()),
+        ChangeNotifierProvider(create: (c) => OrderStore()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

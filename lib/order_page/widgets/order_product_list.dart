@@ -18,7 +18,7 @@ class _OrderProductListState extends State<OrderProductList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 220,
+      height: 300,
       child: ListView.builder(
         shrinkWrap: true, // <==== limit height. 리스트뷰 크기 고정
         // primary: false, // <====  disable scrolling. 리스트뷰 내부는 스크롤 안할거임
