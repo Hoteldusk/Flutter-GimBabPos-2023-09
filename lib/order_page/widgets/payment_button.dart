@@ -5,6 +5,7 @@ import 'package:gimbabpos/order_page/widgets/order_list.dart';
 import 'package:gimbabpos/order_page/widgets/order_title.dart';
 import 'package:gimbabpos/order_page/widgets/total_price.dart';
 import 'package:gimbabpos/provier.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class PaymentButton extends StatelessWidget {
@@ -19,6 +20,18 @@ class PaymentButton extends StatelessWidget {
   final isUsedCheck;
   final getTotalPrice;
   final tableNumber;
+
+  getNowDate() {
+    DateTime nowDate = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(nowDate);
+    return formattedDate;
+  }
+
+  getNowTime() {
+    DateTime nowDate = DateTime.now();
+    String formattedTime = DateFormat('HH:mm:ss').format(nowDate);
+    return formattedTime;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +89,8 @@ class PaymentButton extends StatelessWidget {
                                     context.read<OrderStore>().insertOrderList(
                                         orderList,
                                         tableNumber,
-                                        20230926,
+                                        getNowDate(),
+                                        getNowTime(),
                                         getTotalPrice());
                                     isUsedCheck();
                                     Navigator.pop(context);
@@ -94,7 +108,8 @@ class PaymentButton extends StatelessWidget {
                                     context.read<OrderStore>().insertOrderList(
                                         orderList,
                                         tableNumber,
-                                        20230926,
+                                        getNowDate(),
+                                        getNowTime(),
                                         getTotalPrice());
                                     isUsedCheck();
                                     Navigator.pop(context);

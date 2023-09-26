@@ -27,10 +27,11 @@ class ProcductStore extends ChangeNotifier {
 class OrderStore extends ChangeNotifier {
   var orderList = [];
 
-  insertOrderList(dataList, tableNumber, date, totalPrice) async {
+  insertOrderList(dataList, tableNumber, date, time, totalPrice) async {
     try {
       await _firestore.collection('tbl_orders').add({
         'date': date,
+        'time': time,
         'products': dataList,
         'table_number': tableNumber,
         'total_price': totalPrice,
@@ -41,8 +42,6 @@ class OrderStore extends ChangeNotifier {
   }
 
   getOrderList(date) async {
-    print("---getOrderList---");
-    print("date : $date");
     var result = await _firestore
         .collection('tbl_orders')
         .where('date', isEqualTo: date)
@@ -53,7 +52,6 @@ class OrderStore extends ChangeNotifier {
       var data = result.docs[i].data();
       orderList.add(data);
     }
-    return orderList;
-    // notifyListeners();
+    notifyListeners();
   }
 }

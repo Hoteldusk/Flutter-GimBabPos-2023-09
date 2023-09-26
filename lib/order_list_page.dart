@@ -18,8 +18,6 @@ class _OrderListPageState extends State<OrderListPage> {
   final DateTime _firstDay = DateTime(2023, 1, 1);
   final DateTime _lastDay = DateTime(2023, 12, 31);
   DateTime? selectedDay;
-  var orderList = [];
-  String formattedDate = "";
 
   selectedDayPredicate(DateTime date) {
     if (selectedDay == null) {
@@ -33,6 +31,7 @@ class _OrderListPageState extends State<OrderListPage> {
   @override
   Widget build(BuildContext context) {
     final store = context.read<OrderStore>();
+    final watchStore = context.watch<OrderStore>();
 
     return Scaffold(
       appBar: AppBar(
@@ -57,11 +56,9 @@ class _OrderListPageState extends State<OrderListPage> {
               setState(() {
                 this.selectedDay = selectedDay;
               });
-              print("selectedDay : $selectedDay   focusedDay : $focusedDay");
-              formattedDate = DateFormat('yyyy-MM-dd').format(selectedDay);
-              print("formattedDate : $formattedDate");
-              // 버튼하나 추가해서 해야될듯
-              orderList = store.getOrderList(formattedDate);
+              String formattedDate =
+                  DateFormat('yyyy-MM-dd').format(selectedDay);
+              store.getOrderList(formattedDate);
             },
             selectedDayPredicate: (DateTime date) {
               if (selectedDay == null) {
@@ -74,9 +71,62 @@ class _OrderListPageState extends State<OrderListPage> {
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: orderList.length,
+            itemCount: watchStore.orderList.length,
             itemBuilder: (context, index) {
-              return Text(orderList[index]['date']);
+              return GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (c) {
+                      return const Dialog(
+                        child: SizedBox(
+                          height: 400,
+                          width: 300,
+                          child: Column(
+                              // children: [
+                              //   Text("$tableNumber 번 테이블"),
+                              //   OrderTitle(),
+                              //   SizedBox(
+                              //     height: 200,
+                              //     width: double.infinity,
+                              //     child: OrderList(orderList: orderList),
+                              //   ),
+                              //   TotalPrice(getTotalPrice: getTotalPrice),
+                              // ],
+                              ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(10),
+                  height: 60,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.red, // 테두리 색상
+                      width: 1.0, // 테두리 두께
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        watchStore.orderList[index]['time'],
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        "${watchStore.orderList[index]['table_number']} 번 테이블",
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        watchStore.orderList[index]['total_price'].toString(),
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
           ),
         ],
